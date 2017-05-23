@@ -1,0 +1,27 @@
+{
+  "name": "react-native-android-media-loader",
+  "version": "1.0.0",
+  "description": "Media loader (video & image) for android",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RZulfikri/react-native-android-media-loader.git"
+  },
+  "keywords": [
+    "react-native",
+    "media",
+    "media loader",
+    "android",
+    "video",
+    "image"
+  ],
+  "author": "Rahmat Zulfikri",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/RZulfikri/react-native-android-media-loader/issues"
+  },
+  "homepage": "https://github.com/RZulfikri/react-native-android-media-loader#readme"
+}
