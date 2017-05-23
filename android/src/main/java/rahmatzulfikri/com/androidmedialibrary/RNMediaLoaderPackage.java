@@ -22,12 +22,12 @@ public class RNMediaLoaderPackage implements ReactPackage {
     return Collections.emptyList();
   }
 
+
   @Override
-  public List<NativeModule> createNativeModules(
-                              ReactApplicationContext reactContext) {
+  public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
     List<NativeModule> modules = new ArrayList<>();
 
-    modules.add(new AndroidMediaLibrary(reactContext));
+    modules.add(new AndroidMediaLibraryManager(reactContext));
 
     return modules;
   }

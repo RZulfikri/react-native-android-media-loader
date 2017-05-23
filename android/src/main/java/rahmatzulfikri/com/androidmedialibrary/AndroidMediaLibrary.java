@@ -97,9 +97,9 @@ public class AndroidMediaLibrary {
 
         Cursor cursor = cursorLoader.loadInBackground();
 
-        JSONObject status = new JSONObject();
-        JSONArray content_list = new JSONArray();
-        JSONObject result = new JSONObject();
+        WritableArray content_list = Arguments.createArray();
+        WritableMap status = Arguments.createMap();
+        WritableMap result = Arguments.createMap();
 
         Log.e("DEBUG", String.valueOf(cursor.getCount()));
         if (cursor.moveToFirst()) {
@@ -107,23 +107,16 @@ public class AndroidMediaLibrary {
             int count = 0;
             do {
                 if(count < limit || count == 0) {
-                    JSONObject content = new JSONObject();
-                    try {
-                        content.put("type", cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.MIME_TYPE)));
-                        content.put("path", cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)));
-                        content.put("title", cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.TITLE)));
-                        content.put("id", cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns._ID)));
-                        content_list.put(content);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+                    WritableMap content = Arguments.createMap();
+
+                    content.putString("type", cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.MIME_TYPE)));
+                    content.putString("path", cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)));
+                    content.putString("title", cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.TITLE)));
+                    content.putString("id", cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns._ID)));
+                    content_list.pushMap(content);
                 }else{
-                    try {
-                        status.put("next",cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns._ID)));
-                        status.put("next_load", true);
-                    }catch (JSONException e){
-                        e.printStackTrace();
-                    }
+                    status.putString("next",cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns._ID)));
+                    status.putBoolean("next_load", true);
                 }
                 if(limit > 0){
                     count ++;
@@ -131,21 +124,13 @@ public class AndroidMediaLibrary {
             } while (cursor.moveToNext());
 
             if(count <= limit){
-                try {
-                    status.put("next_load", false);
-                }catch (JSONException e){
-                    e.printStackTrace();
-                }
+                status.putBoolean("next_load", false);
             }
         }
 
-        try {
-            result.put("load_status", status);
-            result.put("result", content_list);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
+        result.putMap("load_status", status);
+        result.putArray("result", content_list);
+        
         promise.resolve(result);
         cursor.close();
 
