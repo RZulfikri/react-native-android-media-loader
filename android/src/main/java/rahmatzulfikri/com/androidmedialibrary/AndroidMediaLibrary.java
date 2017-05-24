@@ -7,9 +7,7 @@ import android.provider.MediaStore;
 import android.support.v4.content.CursorLoader;
 import android.util.Log;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import java.io.File;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Promise;
@@ -111,6 +109,8 @@ public class AndroidMediaLibrary {
 
                     content.putString("type", cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.MIME_TYPE)));
                     content.putString("path", cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)));
+                    Uri uri = Uri.fromFile(new File(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA))));
+                    content.putString("uri", uri.toString());
                     content.putString("title", cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.TITLE)));
                     content.putString("id", cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns._ID)));
                     content_list.pushMap(content);
